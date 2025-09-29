@@ -47,7 +47,7 @@ import * as Blockly from 'blockly';
 
 // Плагин
 export function loadPlugin() {
-    Draw.loadPlugin(function (ui) {
+    window.Draw.loadPlugin(function (ui) {
 
         var graph = ui.editor.graph; //Полотно Draw io
         var model = graph.getModel();
@@ -566,6 +566,13 @@ export function loadPlugin() {
                 this.convertToQuestionNode = new ConvertToSwitchCaseNode(selectedcell, ui, (document.body.offsetWidth - 880) / 2, 120, 900, 550);
             }
         });
+
+        // Патч для навигационного меню
+        document
+          .querySelectorAll('div.geMenubar > a.geMenubar')
+          .forEach((node) => {
+              node.className = 'geItem';
+          });
     });
 }
 //Создание области для блоков в Blockly, для конвертации кода в блоки, чтобы потом получить xml выражений
@@ -574,4 +581,4 @@ divForGlobalWS.id = "globalWS";
 document.body.appendChild(divForGlobalWS);
 export var globalWS = Blockly.inject('globalWS', { toolbox: toolbox });
 
-loadPlugin();
+if (window.Draw) loadPlugin();
